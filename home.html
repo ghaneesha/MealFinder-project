@@ -237,17 +237,32 @@
       closeMenu();
     }
 
-    // Search for meal
+    // Search for meal - Display as category detail with all results
     async function performSearch() {
       const query = document.getElementById('search-input').value.trim();
       if (!query) return alert("Please enter a meal name!");
       const res = await fetch(SEARCH_MEAL_API + query);
       const data = await res.json();
       if (data.meals && data.meals.length > 0) {
-        const meal = data.meals[0];
+        // Show category detail with search results
         homePage.classList.add('hidden');
-        catDetail.classList.add('hidden');
-        showMeal(meal.idMeal);
+        mealDetail.classList.add('hidden');
+        catDetail.classList.remove('hidden');
+
+        document.getElementById('cat-title').textContent = `Search Results for "${query}"`;
+        document.getElementById('cat-info').textContent =
+          `Found ${data.meals.length} meal(s) matching your search.`;
+
+        mealsGrid.innerHTML = data.meals.map(meal => `
+          <div class="meal-card" onclick="showMeal('${meal.idMeal}')">
+            <img src="${meal.strMealThumb}" alt="${meal.strMeal}">
+            <p>${meal.strMeal}</p>
+          </div>
+        `).join('');
+
+        loadCategories();
+        window.scrollTo({ top: 0, behavior: "smooth" });
+        closeMenu();
       } else alert("No meal found.");
     }
 
