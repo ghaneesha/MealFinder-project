@@ -11,6 +11,33 @@ body {
   overflow-x: hidden;
 }
 
+.hidden {
+  display: none !important;
+}
+
+/* Page Styles */
+.page {
+  display: block;
+  animation: fadeIn 0.3s ease-in;
+}
+
+.page.hidden {
+  display: none !important;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.page-content {
+  width: 100%;
+}
+
 /* Navbar */
 nav {
   width: 100%;
@@ -112,40 +139,78 @@ nav {
   background: #e03e00;
 }
 
+.menu-toggle {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 28px;
+  cursor: pointer;
+  padding: 5px 10px;
+  transition: 0.3s ease;
+}
+
+.menu-toggle:hover {
+  transform: scale(1.1);
+}
+
 /* Sidebar */
 .sidebar {
   position: fixed;
   top: 0;
-  right: -250px;
-  width: 250px;
+  right: -340px;
+  width: 340px;
   height: 100%;
-  background: #333;
-  color: white;
-  transition: right 0.3s;
+  background: #fff;
+  color: #333;
+  transition: right 0.3s ease;
   z-index: 999;
   padding-top: 80px;
+  box-shadow: -6px 0 30px rgba(0,0,0,0.08);
+  border-left: 1px solid #f0f0f0;
 }
 
 .sidebar.active {
   right: 0;
 }
 
+.sidebar .sidebar-close {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 2px solid #ff4500;
+  background: #fff;
+  color: #ff4500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+}
+
 .sidebar ul {
   list-style: none;
   padding-left: 0;
+  margin-top: 20px;
 }
 
 .sidebar ul li {
-  padding: 14px;
-  border-bottom: 1px solid #555;
+  padding: 16px 22px;
+  border-bottom: 1px solid #f4f4f4;
   cursor: pointer;
-  text-transform: capitalize;
-  transition: 0.3s;
+  text-transform: none;
+  transition: 0.2s;
+  color: #555;
+  font-size: 14px;
 }
 
 .sidebar ul li:hover {
-  background: #555;
-  padding-left: 20px;
+  background: #fff7f4;
+  padding-left: 26px;
+  color: #ff4500;
 }
 
 /* Categories (Home) */
@@ -283,16 +348,71 @@ main {
 
 /* Meal Detail Section */
 #meal-detail {
-  display: none;
-  padding: 40px;
+  padding: 0;
+  max-width: 100%;
+  margin: 0;
+  background: #f9f9f9;
+}
+
+#meal-detail.hidden {
+  display: none !important;
+}
+
+/* Breadcrumb */
+.meal-breadcrumb {
+  background: #ff4500;
+  color: white;
+  padding: 12px 40px;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 64px;
+}
+
+.breadcrumb-icon {
+  font-size: 16px;
+}
+
+/* Meal Details Header */
+.meal-details-header {
+  background: white;
+  padding: 30px 40px 20px;
   max-width: 1200px;
-  margin: auto;
+  margin: 0 auto;
+}
+
+.meal-details-header h1 {
+  font-size: 28px;
+  color: #333;
+  text-transform: uppercase;
+  font-weight: 700;
+  position: relative;
+  display: inline-block;
+  padding-bottom: 10px;
+}
+
+.meal-details-header h1::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 60px;
+  height: 4px;
+  background: #ff4500;
+  border-radius: 2px;
 }
 
 .meal-container {
   display: flex;
-  flex-wrap: wrap;
-  gap: 30px;
+  gap: 40px;
+  max-width: 1200px;
+  margin: 30px auto;
+  padding: 0 40px;
+  background: white;
+  padding: 30px 40px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 }
 
 .meal-left,
@@ -304,104 +424,171 @@ main {
 .meal-left img {
   width: 100%;
   border-radius: 12px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+  object-fit: cover;
 }
 
-/* Ingredients Box */
+/* Meal Title */
+.meal-title {
+  font-size: 32px;
+  color: #333;
+  font-weight: 700;
+  margin-bottom: 20px;
+  line-height: 1.3;
+}
+
+/* Meal Meta Information */
+.meal-meta {
+  margin-bottom: 25px;
+}
+
+.meta-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 12px;
+  font-size: 14px;
+}
+
+.meta-label {
+  font-weight: 600;
+  color: #333;
+  min-width: 100px;
+  text-transform: uppercase;
+}
+
+.meta-value {
+  color: #555;
+  line-height: 1.5;
+}
+
+.meta-value a {
+  color: #ff4500;
+  text-decoration: none;
+  word-break: break-all;
+}
+
+.meta-value a:hover {
+  text-decoration: underline;
+}
+
+/* Ingredients Box - Professional Design */
 .ingredients-box {
   background: #ff4500;
   color: white;
-  padding: 15px;
-  border-radius: 10px;
-  margin-top: 15px;
+  padding: 20px;
+  border-radius: 8px;
+  margin-top: 25px;
+}
+
+.ingredients-box h3 {
+  font-size: 16px;
+  font-weight: 700;
+  margin-bottom: 15px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
 .ingredient-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-  gap: 10px;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
 }
 
 .ingredient-item {
   display: flex;
   align-items: center;
-  gap: 8px;
-  background: rgba(255, 255, 255, 0.15);
-  padding: 8px;
-  border-radius: 8px;
+  gap: 10px;
+  background: rgba(255, 255, 255, 0.12);
+  padding: 10px 12px;
+  border-radius: 6px;
   font-weight: 500;
+  font-size: 13px;
 }
 
 .circle {
-  background: #1e90ff;
-  color: #fff;
+  background: white;
+  color: #ff4500;
   border-radius: 50%;
-  width: 24px;
-  height: 24px;
+  width: 28px;
+  height: 28px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 13px;
+  font-size: 12px;
   font-weight: bold;
+  flex-shrink: 0;
 }
 
-/* Measure Box */
-.measure-box {
-  background: #fff;
-  padding: 15px;
-  border-radius: 10px;
-  border: 1px solid #eee;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.03);
-  margin-top: 15px;
+/* Measures Section */
+.measures-section {
+  max-width: 1200px;
+  margin: 30px auto;
+  padding: 30px 40px;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 }
 
-.measure-box h3 {
-  margin-bottom: 10px;
+.measures-section h3 {
+  font-size: 18px;
+  font-weight: 700;
+  color: #333;
+  margin-bottom: 20px;
+  text-transform: uppercase;
 }
 
 .measure-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-  gap: 10px;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 15px;
 }
 
 .measure-item {
   background: #f7f7f7;
-  border-radius: 8px;
-  padding: 8px 10px;
+  border-radius: 6px;
+  padding: 12px 15px;
   font-weight: 500;
-}
-
-/* Instructions Box */
-.instructions-box {
-  background: #fff;
   color: #333;
-  padding: 15px;
-  border-radius: 10px;
-  margin-top: 15px;
-  border: 1px solid #eee;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+  border-left: 4px solid #ff4500;
 }
 
-.instructions-box h3 {
-  margin-bottom: 10px;
+/* Instructions Section */
+.instructions-section {
+  max-width: 1200px;
+  margin: 30px auto;
+  padding: 30px 40px;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 }
 
-#meal-instructions {
+.instructions-section h3 {
+  font-size: 18px;
+  font-weight: 700;
+  color: #333;
+  margin-bottom: 20px;
+  text-transform: uppercase;
+}
+
+.instructions-list {
   list-style: none;
   padding: 0;
-  display: grid;
-  gap: 8px;
+  margin: 0;
 }
 
-#meal-instructions li {
+.instructions-list li {
   background: #f9f9f9;
-  padding: 8px 10px;
-  border-radius: 8px;
-  line-height: 1.4;
+  padding: 14px 16px;
+  border-radius: 6px;
+  margin-bottom: 12px;
+  line-height: 1.6;
+  color: #333;
+  border-left: 4px solid #ff4500;
+  font-size: 14px;
 }
 
-/* Back Button */
+/* Responsive */
 .back-btn {
   margin-top: 25px;
   padding: 10px 20px;

@@ -14,7 +14,7 @@
       <h1 class="logo">MealFinder</h1>
     </div>
     <div class="nav-right">
-      <button class="menu-toggle" onclick="toggleMenu()" aria-label="Open menu">☰</button>
+      <button class="menu-toggle" id="menu-toggle" onclick="toggleMenu()" aria-label="Open menu">☰</button>
     </div>
   </nav>
 
@@ -35,85 +35,126 @@
 
   <!-- Sidebar -->
   <div class="sidebar" id="sidebar">
+    <button class="sidebar-close" onclick="closeMenu()" aria-label="Close menu">✕</button>
     <ul>
-      <li onclick="showCategory('Beef')">Beef</li>
-      <li onclick="showCategory('Chicken')">Chicken</li>
-      <li onclick="showCategory('Dessert')">Dessert</li>
-      <li onclick="showCategory('Seafood')">Seafood</li>
-      <li onclick="showCategory('Vegan')">Vegan</li>
-      <li onclick="showCategory('Pasta')">Pasta</li>
-      <li onclick="showCategory('Pork')">Pork</li>
-      <li onclick="showCategory('Starter')">Starter</li>
-      <li onclick="showCategory('Vegetarian')">Vegetarian</li>
-      <li onclick="showCategory('Breakfast')">Breakfast</li>
-      <li onclick="showCategory('Miscellaneous')">Miscellaneous</li>
-      <li onclick="showCategory('Lamb')">Lamb</li>
-      <li onclick="showCategory('Side')">Side</li>
-      <li onclick="showCategory('Goat')">Goat</li>
+      <li onclick="showCategory('Beef'); closeMenu();">Beef</li>
+      <li onclick="showCategory('Chicken'); closeMenu();">Chicken</li>
+      <li onclick="showCategory('Dessert'); closeMenu();">Dessert</li>
+      <li onclick="showCategory('Seafood'); closeMenu();">Seafood</li>
+      <li onclick="showCategory('Vegan'); closeMenu();">Vegan</li>
+      <li onclick="showCategory('Pasta'); closeMenu();">Pasta</li>
+      <li onclick="showCategory('Pork'); closeMenu();">Pork</li>
+      <li onclick="showCategory('Starter'); closeMenu();">Starter</li>
+      <li onclick="showCategory('Vegetarian'); closeMenu();">Vegetarian</li>
+      <li onclick="showCategory('Breakfast'); closeMenu();">Breakfast</li>
+      <li onclick="showCategory('Miscellaneous'); closeMenu();">Miscellaneous</li>
+      <li onclick="showCategory('Lamb'); closeMenu();">Lamb</li>
+      <li onclick="showCategory('Side'); closeMenu();">Side</li>
+      <li onclick="showCategory('Goat'); closeMenu();">Goat</li>
     </ul>
   </div>
 
-  <!-- Home Categories -->
-  <main id="home-page">
+  <!-- PAGE 1: Home - Display Categories -->
+  <main id="home-page" class="page">
     <section class="categories">
       <h2>CATEGORIES</h2>
       <div class="category-grid" id="category-grid"></div>
     </section>
   </main>
 
-  <!-- Category Detail -->
-  <section id="category-detail" class="hidden">
-    <div class="category-box">
-      <div class="category-info">
-        <h2 id="cat-title"></h2>
-        <p id="cat-info"></p>
+  <!-- PAGE 2: Category Detail - Display Meals + Categories Below -->
+  <section id="category-detail" class="page hidden">
+    <div class="page-content">
+      <!-- Category Info & Meals -->
+      <div class="category-box">
+        <div class="category-info">
+          <h2 id="cat-title"></h2>
+          <p id="cat-info"></p>
+          <button class="back-btn" onclick="goHome()">← Back to Home</button>
+        </div>
+        <div class="meals-grid" id="meals-grid"></div>
       </div>
 
-      <div class="meals-grid" id="meals-grid"></div>
+      <!-- Categories Section Below -->
+      <section class="categories">
+        <h2>EXPLORE MORE CATEGORIES</h2>
+        <div class="category-grid" id="category-grid-2"></div>
+      </section>
     </div>
   </section>
 
-  <!-- Meal Detail -->
-  <section id="meal-detail" class="hidden">
-    <div class="meal-container">
-      <div class="meal-left">
-        <img id="meal-img" alt="Meal Image">
+  <!-- PAGE 3: Meal Detail - Display Meal Info + Categories Below -->
+  <section id="meal-detail" class="page hidden">
+    <div class="page-content">
+      <!-- Breadcrumb -->
+      <div class="meal-breadcrumb">
+        <span class="breadcrumb-icon">🏠</span>
+        <span id="meal-breadcrumb-text">Meal Name</span>
+      </div>
 
-        <div class="measure-box">
-          <h3>Measure:</h3>
-          <div id="meal-measures" class="measure-grid"></div>
+      <!-- Meal Details Heading -->
+      <div class="meal-details-header">
+        <h1>MEAL DETAILS</h1>
+      </div>
+
+      <!-- Meal Info Container -->
+      <div class="meal-container">
+        <div class="meal-left">
+          <img id="meal-img" alt="Meal Image" class="meal-image">
         </div>
 
-        <div class="instructions-box">
-          <h3>Instructions:</h3>
-          <ul id="meal-instructions"></ul>
+        <div class="meal-right">
+          <h2 id="meal-name" class="meal-title"></h2>
+          
+          <div class="meal-meta">
+            <div class="meta-item">
+              <span class="meta-label">CATEGORY:</span>
+              <span id="meal-category" class="meta-value"></span>
+            </div>
+            <div class="meta-item">
+              <span class="meta-label">Source:</span>
+              <a id="meal-source" href="#" target="_blank" class="meta-value"></a>
+            </div>
+            <div class="meta-item">
+              <span class="meta-label">Tags:</span>
+              <span id="meal-tags" class="meta-value"></span>
+            </div>
+          </div>
+
+          <!-- Ingredients Box - Orange Background with Badges -->
+          <div class="ingredients-box">
+            <h3>Ingredients</h3>
+            <div id="meal-ingredients" class="ingredient-grid"></div>
+          </div>
+
+          <button class="back-btn" onclick="backToCategory()">← Back to Category</button>
         </div>
       </div>
 
-      <div class="meal-right">
-        <h2 id="meal-name"></h2>
-        <p><strong>Category:</strong> <span id="meal-category"></span></p>
-        <p><strong>Source:</strong> <a id="meal-source" href="#" target="_blank"></a></p>
-        <p><strong>Tags:</strong> <span id="meal-tags"></span></p>
-
-        <div class="ingredients-box">
-          <h3>Ingredients</h3>
-          <div id="meal-ingredients" class="ingredient-grid"></div>
-        </div>
-
-        <button class="back-btn" onclick="backToCategory()">← Back</button>
+      <!-- Measures Section -->
+      <div class="measures-section">
+        <h3>Measure:</h3>
+        <div id="meal-measures" class="measure-grid"></div>
       </div>
+
+      <!-- Instructions Section -->
+      <div class="instructions-section">
+        <h3>Instructions:</h3>
+        <ul id="meal-instructions" class="instructions-list"></ul>
+      </div>
+
+      <!-- Categories Section Below -->
+      <section class="categories">
+        <h2>EXPLORE MORE CATEGORIES</h2>
+        <div class="category-grid" id="category-grid-3"></div>
+      </section>
     </div>
-
-    <section class="categories">
-      <h2>CATEGORIES</h2>
-      <div class="category-grid" id="category-grid-again"></div>
-    </section>
   </section>
 
   <script>
     const categoryGrid = document.getElementById('category-grid');
-    const categoryGridAgain = document.getElementById('category-grid-again');
+    const categoryGrid2 = document.getElementById('category-grid-2');
+    const categoryGrid3 = document.getElementById('category-grid-3');
     const catDetail = document.getElementById('category-detail');
     const mealDetail = document.getElementById('meal-detail');
     const homePage = document.getElementById('home-page');
@@ -125,17 +166,35 @@
     const SEARCH_MEAL_API = 'https://www.themealdb.com/api/json/v1/1/search.php?s=';
 
     function toggleMenu() {
-      document.getElementById('sidebar').classList.toggle('active');
+      const sidebar = document.getElementById('sidebar');
+      const menuToggle = document.getElementById('menu-toggle');
+      sidebar.classList.toggle('active');
+      
+      if (sidebar.classList.contains('active')) {
+        menuToggle.textContent = '✕';
+      } else {
+        menuToggle.textContent = '☰';
+      }
     }
 
+    function closeMenu() {
+      const sidebar = document.getElementById('sidebar');
+      const menuToggle = document.getElementById('menu-toggle');
+      sidebar.classList.remove('active');
+      menuToggle.textContent = '☰';
+    }
+
+    // PAGE NAVIGATION - Go to Home Page
     function goHome() {
-      homePage.style.display = 'block';
-      catDetail.style.display = 'none';
-      mealDetail.style.display = 'none';
+      homePage.classList.remove('hidden');
+      catDetail.classList.add('hidden');
+      mealDetail.classList.add('hidden');
       loadCategories();
       window.scrollTo({ top: 0, behavior: "smooth" });
+      closeMenu();
     }
 
+    // Load categories for all grids
     async function loadCategories() {
       const res = await fetch(CATEGORIES_API);
       const data = await res.json();
@@ -145,14 +204,17 @@
           <span class="label">${cat.strCategory}</span>
         </div>
       `).join('');
+      
       categoryGrid.innerHTML = cardsHTML;
-      categoryGridAgain.innerHTML = cardsHTML;
+      categoryGrid2.innerHTML = cardsHTML;
+      categoryGrid3.innerHTML = cardsHTML;
     }
 
+    // Show category and its meals (PAGE 2)
     async function showCategory(category) {
-      homePage.style.display = 'none';
-      mealDetail.style.display = 'none';
-      catDetail.style.display = 'block';
+      homePage.classList.add('hidden');
+      mealDetail.classList.add('hidden');
+      catDetail.classList.remove('hidden');
 
       const res = await fetch(CATEGORY_MEALS_API + category);
       const data = await res.json();
@@ -168,8 +230,14 @@
           <p>${meal.strMeal}</p>
         </div>
       `).join('');
+
+      // Load categories below
+      loadCategories();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+      closeMenu();
     }
 
+    // Search for meal
     async function performSearch() {
       const query = document.getElementById('search-input').value.trim();
       if (!query) return alert("Please enter a meal name!");
@@ -177,8 +245,8 @@
       const data = await res.json();
       if (data.meals && data.meals.length > 0) {
         const meal = data.meals[0];
-        homePage.style.display = 'none';
-        catDetail.style.display = 'none';
+        homePage.classList.add('hidden');
+        catDetail.classList.add('hidden');
         showMeal(meal.idMeal);
       } else alert("No meal found.");
     }
@@ -187,13 +255,17 @@
       if (e.key === "Enter") performSearch();
     });
 
+    // Show meal details (PAGE 3)
     async function showMeal(id) {
-      catDetail.style.display = 'none';
-      mealDetail.style.display = 'block';
+      catDetail.classList.add('hidden');
+      mealDetail.classList.remove('hidden');
 
       const res = await fetch(MEAL_DETAIL_API + id);
       const data = await res.json();
       const meal = data.meals[0];
+
+      // Breadcrumb
+      document.getElementById('meal-breadcrumb-text').textContent = meal.strMeal;
 
       document.getElementById('meal-img').src = meal.strMealThumb;
       document.getElementById('meal-name').textContent = meal.strMeal;
@@ -224,19 +296,20 @@
       document.getElementById('meal-instructions').innerHTML =
         steps.map(s => `<li>✅ ${s}</li>`).join('');
 
+      // Load categories below
       loadCategories();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+      closeMenu();
     }
 
-    function backToHome() {
-      catDetail.style.display = 'none';
-      homePage.style.display = 'block';
-    }
-
+    // Back to category detail
     function backToCategory() {
-      mealDetail.style.display = 'none';
-      catDetail.style.display = 'block';
+      mealDetail.classList.add('hidden');
+      catDetail.classList.remove('hidden');
+      window.scrollTo({ top: 0, behavior: "smooth" });
     }
 
+    // Initialize on page load
     loadCategories();
   </script>
 </body>
