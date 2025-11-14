@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Meal Finder 🍽️</title>
+  <link rel="stylesheet" href="1main.css">
+</head>
+<body>
+  <header>
+    <h1>🍲 Meal Finder</h1>
+    <p>Discover delicious meals from around the world!</p>
+  </header>
+
+  <main>
+    <section id="categories" class="categories"></section>
+    <section id="meals" class="meals"></section>
+    <section id="meal-details" class="meal-details"></section>
+  </main>
+
+  <script>
+    const categoriesContainer = document.getElementById('categories');
+    const mealsContainer = document.getElementById('meals');
+    const mealDetailsContainer = document.getElementById('meal-details');
+
+    // Fetch and display categories
+    async function fetchCategories() {
+      const res = await fetch('https://www.themealdb.com/api/json/v1/1/categories.php');
+      const data = await res.json();
+      displayCategories(data.categories);
+    }
+
+    function displayCategories(categories) {
+      categoriesContainer.innerHTML = categories.map(cat => `
+        <div class="category-card" data-category="${cat.strCategory}">
+          <img src="${cat.strCategoryThumb}" alt="${cat.strCategory}">
+          <div class="category-info">
+            <h3>${cat.strCategory}</h3>
+            <p>${cat.strCategoryDescription.slice(0, 80)}...</p>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    // Fetch and display meals for a category
+    async function fetchMeals(category) {
+      const res = await fetch(`https://www.themealdb.com/api/json/v1/1/filter.php?c=${category}`);
+      const data = await res.json();
+      displayMeals(data.meals);
+    }
+
+    function displayMeals(meals) {
+      mealDetailsContainer.innerHTML = '';
+      mealsContainer.innerHTML = meals.slice(0, 6).map(meal => `
+        <div class="meal-card" data-id="${meal.idMeal}">
+          <img src="${meal.strMealThumb}" alt="${meal.strMeal}">
+          <h4>${meal.strMeal}</h4>
+        </div>
+      `).join('');
+    }
+
+    // Fetch and display meal details
+    async function fetchMealDetails(id) {
+      const res = await fetch(`https://www.themealdb.com/api/json/v1/1/lookup.php?i=${id}`);
+      const data = await res.json();
+      displayMealDetails(data.meals[0]);
+    }
+
+    function displayMealDetails(meal) {
+      const ingredients = [];
+      for (let i = 1; i <= 20; i++) {
+        if (meal[`strIngredient${i}`]) {
+          ingredients.push({
+            name: meal[`strIngredient${i}`],
+            measure: meal[`strMeasure${i}`]
+          });
+        }
+      }
+
+      mealsContainer.innerHTML = '';
+      mealDetailsContainer.innerHTML = `
+        <div class="meal-info-box">
+          <div class="meal-header">
+            <img src="${meal.strMealThumb}" alt="${meal.strMeal}">
+            <div>
+              <h2>${meal.strMeal}</h2>
+              <p><strong>Category:</strong> ${meal.strCategory}</p>
+              <p><strong>Area:</strong> ${meal.strArea}</p>
+              <p><strong>Tags:</strong> ${meal.strTags || 'None'}</p>
+              <a href="${meal.strSource}" target="_blank" class="source-link">🔗 Source</a>
+            </div>
+          </div>
+
+          <h3>🧂 Ingredients</h3>
+          <div class="ingredients-box">
+            ${ingredients.map(i => `<p>${i.name} - <span>${i.measure}</span></p>`).join('')}
+          </div>
+
+          <h3>🍳 Instructions</h3>
+          <p class="instructions">${meal.strInstructions}</p>
+        </div>
+      `;
+    }
+
+    // Event listeners
+    categoriesContainer.addEventListener('click', (e) => {
+      const card = e.target.closest('.category-card');
+      if (card) {
+        const category = card.dataset.category;
+        document.querySelectorAll('.category-card').forEach(c => c.classList.remove('active'));
+        card.classList.add('active');
+        fetchMeals(category);
+      }
+    });
+
+    mealsContainer.addEventListener('click', (e) => {
+      const mealCard = e.target.closest('.meal-card');
+      if (mealCard) {
+        const id = mealCard.dataset.id;
+        fetchMealDetails(id);
+      }
+    });
+
+    fetchCategories();
+  </script>
+</body>
+</html>
